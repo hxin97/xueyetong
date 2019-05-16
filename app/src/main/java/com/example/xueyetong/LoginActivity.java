@@ -1,5 +1,6 @@
 package com.example.xueyetong;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -20,7 +21,6 @@ import org.xyt.entity.User_info;
 import java.io.DataOutputStream;
 import java.io.ObjectInputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class LoginActivity extends BaseActivity {
@@ -37,7 +37,7 @@ public class LoginActivity extends BaseActivity {
 
     private CheckBox rememberPass;
 
-    private String ip = "192.168.164.79";
+    public static String ip = "192.168.164.79";
 
     private Handler mHandler;
 
@@ -47,7 +47,7 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        pref = getSharedPreferences("loginState", Context.MODE_PRIVATE);
 
         editText_account = findViewById(R.id.account);
         editText_password = findViewById(R.id.password);
@@ -73,7 +73,22 @@ public class LoginActivity extends BaseActivity {
                 } else if (!user.getUPassword().trim().equals(editText_password.getText().toString().trim())){
                     Toast.makeText(LoginActivity.this,"密码错误",Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(LoginActivity.this,"成功",Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(LoginActivity.this,"成功",Toast.LENGTH_SHORT).show();
+                    editor = pref.edit();
+                    if(rememberPass.isChecked()){
+                        editor.putBoolean("remember_password",true);
+                        editor.putString("account",user.getUId());
+                        editor.putString("password",user.getUPassword());
+                        editor.putString("userName",user.getUName());
+                        editor.putInt("state",1);
+                    }else {
+                        editor.clear();
+                    }
+                    editor.apply();
+
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
             }
         };
@@ -93,28 +108,6 @@ public class LoginActivity extends BaseActivity {
                     }
                 }).start();
 
-
-//                String account = editText_account.getText().toString();
-//                String password = editText_password.getText().toString();
-//
-//                if(account.equals("admin")&&password.equals("123456")){
-//                    editor = pref.edit();
-//                    if(rememberPass.isChecked()){
-//                        editor.putBoolean("remember_password",true);
-//                        editor.putString("account",account);
-//                        editor.putString("password",password);
-//                    }else {
-//                        editor.clear();
-//                    }
-//                    editor.apply();
-//
-//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    startActivity(intent);
-//                    finish();
-//                }else {
-//                    Toast.makeText(LoginActivity.this,"account or password is invalid",
-//                            Toast.LENGTH_SHORT).show();
-//                }
             }
         });
     }
