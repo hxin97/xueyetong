@@ -31,6 +31,9 @@ public class MainActivity extends BaseActivity
     private TextView nav_userName;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
+    View headerLayout;
+    NavigationView navigationView;
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,28 +41,14 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        pref = getSharedPreferences("loginState", Context.MODE_PRIVATE);
-        if(pref.getInt("state",0)==1){
-            isLogin = true;
-        } else { isLogin = false;}
 
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
@@ -84,71 +73,24 @@ public class MainActivity extends BaseActivity
             }
         });
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        initNav_header();
 
 
-        final View headerLayout;
-        /**
-         * 如果状态为已登录，将navigationView的headerLayout设置为其中一个样式，否则为另一样式
-         */
-        if( isLogin ) {
-            headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_main2);
-            nav_userName = (TextView)headerLayout.findViewById(R.id.nav_userName);
-            nav_userName.setText(pref.getString("userName",null));
-            logout = (TextView)headerLayout.findViewById(R.id.nav_logout);
-            logout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    nav_userName.setText("");
-                    editor = pref.edit();
-                    editor.putInt("state",0);
-                    editor.apply();
-                    drawer.closeDrawer(GravityCompat.START);
-                    navigationView.removeHeaderView(headerLayout);
-                    View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_main1);
-                    login = (TextView) headerLayout.findViewById(R.id.login);
-                    register = (TextView)headerLayout.findViewById(R.id.register);
-                    login.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-                    register.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(MainActivity.this,RegisterActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-                }
-            });
+    }
 
-        } else {
-            headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_main1);
-            login = (TextView) headerLayout.findViewById(R.id.login);
-            register = (TextView)headerLayout.findViewById(R.id.register);
-            login.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                }
-            });
-            register.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this,RegisterActivity.class);
-                    startActivity(intent);
-                }
-            });
-        }
-
-
-
-
-
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        initNav_header();
     }
 
     @Override
@@ -206,5 +148,70 @@ public class MainActivity extends BaseActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void initNav_header(){
+        pref = getSharedPreferences("loginState", Context.MODE_PRIVATE);
+        if(pref.getInt("state",0)==1){
+            isLogin = true;
+        } else { isLogin = false;}
+        /**
+         * 如果状态为已登录，将navigationView的headerLayout设置为其中一个样式，否则为另一样式
+         */
+        if( isLogin ) {
+            navigationView.removeHeaderView(navigationView.getHeaderView(0));
+            headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_main2);
+            nav_userName = (TextView)headerLayout.findViewById(R.id.nav_userName);
+            nav_userName.setText(pref.getString("userName",null));
+            logout = (TextView)headerLayout.findViewById(R.id.nav_logout);
+            logout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    nav_userName.setText("");
+                    editor = pref.edit();
+                    editor.putInt("state",0);
+                    editor.apply();
+                    drawer.closeDrawer(GravityCompat.START);
+                    navigationView.removeHeaderView(navigationView.getHeaderView(0));
+                    headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_main1);
+                    login = (TextView) headerLayout.findViewById(R.id.login);
+                    register = (TextView)headerLayout.findViewById(R.id.register);
+                    login.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    register.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(MainActivity.this,RegisterActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                }
+            });
+
+        } else {
+            navigationView.removeHeaderView(navigationView.getHeaderView(0));
+            headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_main1);
+            login = (TextView) headerLayout.findViewById(R.id.login);
+            register = (TextView)headerLayout.findViewById(R.id.register);
+            login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+            register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this,RegisterActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 }

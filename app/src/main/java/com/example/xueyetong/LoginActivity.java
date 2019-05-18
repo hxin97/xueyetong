@@ -70,9 +70,14 @@ public class LoginActivity extends BaseActivity {
 
                 if (user.getUId().equals("fail")){
                     Toast.makeText(LoginActivity.this,"用户不存在",Toast.LENGTH_SHORT).show();
-                } else if (!user.getUPassword().trim().equals(editText_password.getText().toString().trim())){
+                }
+                else if(user.getUId().equals("no link")){
+                    Toast.makeText(LoginActivity.this,"无法访问服务器，请检查网络",Toast.LENGTH_SHORT).show();
+                }
+                else if (!user.getUPassword().trim().equals(editText_password.getText().toString().trim())){
                     Toast.makeText(LoginActivity.this,"密码错误",Toast.LENGTH_SHORT).show();
-                } else {
+                }
+                else {
 //                    Toast.makeText(LoginActivity.this,"成功",Toast.LENGTH_SHORT).show();
                     editor = pref.edit();
                     if(rememberPass.isChecked()){
@@ -114,10 +119,9 @@ public class LoginActivity extends BaseActivity {
 
     public User_info login (String userId) {
 //        Log.d(TAG, "here to check: "+userId);
-        User_info result = null;
-        URL url = null;
+        User_info result;
         try {
-            url = new URL("http://"+ip+":8080/XYT_server/UserLogin");
+            URL url = new URL("http://"+ip+":8080/XYT_server/UserLogin");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
             connection.setDoOutput(true);
@@ -136,6 +140,9 @@ public class LoginActivity extends BaseActivity {
         } catch (Exception e) {
 //            Log.d(TAG, "here to check3: "+e.toString());
             e.printStackTrace();
+            result = new User_info();
+            result.setUId("no link");
+            return result;
         }
 
         return result;

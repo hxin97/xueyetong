@@ -1,7 +1,10 @@
 package com.example.xueyetong;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,16 +16,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.xyt.entity.User_info;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -39,12 +40,14 @@ public class RegisterActivity extends AppCompatActivity {
     EditText edit_password;
     EditText check_password;
     ImageView checkIdImage;
+    TextView textView_err;
     Button reg;
     int userSex = 2; //性别默认为保密
 
     private String TAG = "RegisterActivity";
 
     private Handler mHandler;
+    private Handler mHandler2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,9 @@ public class RegisterActivity extends AppCompatActivity {
         edit_password = findViewById(R.id.password);
         check_password = findViewById(R.id.check_password);
         checkIdImage = findViewById(R.id.check_id_image);
+        textView_err = findViewById(R.id.textView_err);
         reg = findViewById(R.id.reg);
+        reg.setEnabled(false); //初始化不可点击，在确认密码一栏填写完成后才设为可点击
 
         mHandler = new Handler(){
             @Override
@@ -79,9 +84,27 @@ public class RegisterActivity extends AppCompatActivity {
                         reg.setEnabled(false);
                     }
                     checkIdImage.setImageResource(R.drawable.attention);
-                    Toast.makeText(RegisterActivity.this,"该学号已被注册过了",Toast.LENGTH_SHORT).show();
+                    textView_err.setText("该学号已被注册过了");
                 } else if (result == 2){
+                    if(reg.isEnabled()){
+                        reg.setEnabled(false);
+                    }
                     Toast.makeText(RegisterActivity.this,"无法获取服务,请稍后再试",Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        mHandler2 = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == 1){
+                    Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(RegisterActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
+                    finish();
+                }else if (msg.what == 0){
+                    textView_err.setText("无法访问服务器，请检查网络状态");
                 }
             }
         };
@@ -111,6 +134,29 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        check_password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!s.toString().trim().equals(edit_password.getText().toString().trim())){
+                    check_password.setBackgroundColor(getResources().getColor(R.color.edit_underline_attention));
+
+                } else {
+                    check_password.setBackgroundColor(getResources().getColor(R.color.white));
+                    reg.setEnabled(true);
+                }
+            }
+        });
+
         reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,6 +182,9 @@ public class RegisterActivity extends AppCompatActivity {
                             newUser.setUPhoneNum(edit_phoneNum.getText().toString().trim());
                             newUser.setUPhoto("");
                             int result = register(newUser);
+                            Message msg = new Message();
+                            msg.what = result;
+                            mHandler2.sendMessage(msg);
                         }
                     }).start();
 
@@ -173,6 +222,7 @@ public class RegisterActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.d(TAG, "here to check3: "+e.toString());
             e.printStackTrace();
+            return 0;
         }
         return 1;
     }
@@ -214,6 +264,7 @@ public class RegisterActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.d(TAG, "here to check3: "+e.toString());
             e.printStackTrace();
+            return 2;
         }
 
         return 2;

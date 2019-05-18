@@ -5,4 +5,10 @@
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+
+    <style name="EditTextStyle" parent="Base.Widget.AppCompat.EditText">
+        <item name="android:colorControlNormal">@color/edit_underline_normal</item>
+        <item name="android:colorControlActivated">@color/colorPrimary</item>
+    </style>
+
 </resources>
