@@ -7,4 +7,5 @@
     <color name="edit_underline_attention">#F08080</color>
     <color name="text_attention">#CD3333</color>
     <color name="white">#fff</color>
+    <color name="m_black">#8A000000</color>
 </resources>

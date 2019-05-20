@@ -43,7 +43,7 @@ public class BaseActivity extends AppCompatActivity {
         ActivityCollector.removeActivity(this);
     }
 
-    class ForceOfflineReceiver extends BroadcastReceiver {
+    public class ForceOfflineReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(final Context context, Intent intent) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -54,8 +54,6 @@ public class BaseActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     ActivityCollector.finishAll();
-                    Intent intent = new Intent(context, LoginActivity.class);
-                    context.startActivity(intent);
                 }
             });
             builder.show();

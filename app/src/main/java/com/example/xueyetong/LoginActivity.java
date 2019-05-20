@@ -84,14 +84,15 @@ public class LoginActivity extends BaseActivity {
                         editor.putBoolean("remember_password",true);
                         editor.putString("account",user.getUId());
                         editor.putString("password",user.getUPassword());
-                        editor.putString("userName",user.getUName());
-                        editor.putInt("state",1);
                     }else {
                         editor.clear();
                     }
+                    editor.putString("userName",user.getUName());
+                    editor.putInt("state",1);  //登录状态为已登录
                     editor.apply();
 
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("userName",user.getUName());
                     startActivity(intent);
                     finish();
                 }
@@ -125,8 +126,8 @@ public class LoginActivity extends BaseActivity {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
             connection.setDoOutput(true);
-            connection.setConnectTimeout(10000);
-            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
             connection.setRequestMethod("POST");
             DataOutputStream outobj = new DataOutputStream(connection.getOutputStream());
             outobj.writeUTF(userId);

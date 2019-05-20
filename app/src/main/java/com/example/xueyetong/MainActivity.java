@@ -3,26 +3,44 @@ package com.example.xueyetong;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.view.Gravity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.xueyetong.Fragments.CommunityFragment;
+import com.example.xueyetong.Fragments.HomeFragment;
+import com.example.xueyetong.Fragments.NewsFragment;
+import com.example.xueyetong.Fragments.NewsFragment_1;
+import com.example.xueyetong.Fragments.NewsFragment_2;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements
+        NewsFragment_1.OnFragmentInteractionListener,
+        NewsFragment_2.OnFragmentInteractionListener,
+        NewsFragment.OnFragmentInteractionListener,
+        HomeFragment.OnFragmentInteractionListener,
+        CommunityFragment.OnFragmentInteractionListener,
+        NavigationView.OnNavigationItemSelectedListener,
+        BottomNavigationView.OnNavigationItemSelectedListener {
 
     public boolean isLogin = false;
     private TextView login;
@@ -31,49 +49,45 @@ public class MainActivity extends BaseActivity
     private TextView nav_userName;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    View headerLayout;
+    private FragmentTransaction transaction;
+    private FragmentManager fragmentManager;
+    Fragment home;
+    Fragment news;
+    Fragment community;
     NavigationView navigationView;
+    View headerLayout;
     DrawerLayout drawer;
+    FloatingActionButton fab;
+    private long exitTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        fab = findViewById(R.id.fab);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
+
+        home = new HomeFragment();
+        fragmentManager = getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.content,home);
+        transaction.commit();
+
+//        toolbar.setTitle(R.string.toolbar_title);
         setSupportActionBar(toolbar);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(@NonNull View view, float v) {
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-            }
-
-            @Override
-            public void onDrawerOpened(@NonNull View view) {
-
-            }
-
-            @Override
-            public void onDrawerClosed(@NonNull View view) {
-
-            }
-
-            @Override
-            public void onDrawerStateChanged(int i) {
-
-            }
-        });
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +98,8 @@ public class MainActivity extends BaseActivity
 
         initNav_header();
 
+        initNewsPages();
+
 
     }
 
@@ -91,6 +107,7 @@ public class MainActivity extends BaseActivity
     protected void onRestart() {
         super.onRestart();
         initNav_header();
+        initNewsPages();
     }
 
     @Override
@@ -99,7 +116,7 @@ public class MainActivity extends BaseActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            exit();
         }
     }
 
@@ -130,24 +147,73 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        switch (id){
+            case R.id.tab_home:
+                hindAllFragment();
+                if (home != null) {
+                    transaction.show(home);
+                } else {
+                    home = new HomeFragment();
+                    transaction.add(R.id.content,home);
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+                }
+                transaction.commit();
+                break;
+            case R.id.tab_news:
+                hindAllFragment();
+                if (news != null) {
+                    transaction.show(news);
+                }
+                else {
+                    news = new NewsFragment();
+                    transaction.add(R.id.content,news);
+                }
+                transaction.commit();
+                break;
+            case R.id.tab_community:
+                hindAllFragment();
+                if (community != null) {
+                    transaction.show(community);
+                }
+                else {
+                    community = new CommunityFragment();
+                    transaction.add(R.id.content,community);
+                }
+                transaction.commit();
+                break;
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        if (id == R.id.nav_camera) {
+//            // Handle the camera action
+//        } else if (id == R.id.nav_gallery) {
+//
+//        } else if (id == R.id.nav_slideshow) {
+//
+//        } else if (id == R.id.nav_manage) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void hindAllFragment(){
+        transaction = fragmentManager.beginTransaction();
+        if (home != null){
+            transaction.hide(home);
+        }
+        if (news != null) {
+            transaction.hide(news);
+        }
+        if (community != null) {
+            transaction.hide(community);
+        }
     }
 
     public void initNav_header(){
@@ -162,7 +228,7 @@ public class MainActivity extends BaseActivity
             navigationView.removeHeaderView(navigationView.getHeaderView(0));
             headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_main2);
             nav_userName = (TextView)headerLayout.findViewById(R.id.nav_userName);
-            nav_userName.setText(pref.getString("userName",null));
+            nav_userName.setText(pref.getString("userName",""));
             logout = (TextView)headerLayout.findViewById(R.id.nav_logout);
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -213,5 +279,22 @@ public class MainActivity extends BaseActivity
                 }
             });
         }
+    }
+
+    public void initNewsPages(){}
+
+    public void exit(){
+        if((System.currentTimeMillis() - exitTime) > 2000){
+            Toast.makeText(getApplicationContext(),"再按一次返回桌面",Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+            System.exit(0);
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

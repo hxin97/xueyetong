@@ -104,7 +104,9 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
                     finish();
                 }else if (msg.what == 0){
-                    textView_err.setText("无法访问服务器，请检查网络状态");
+                    textView_err.setText("无法访问服务器，请稍后再试");
+                }else if (msg.what == 2){
+                    textView_err.setText("失败，账号已存在");
                 }
             }
         };
@@ -201,8 +203,8 @@ public class RegisterActivity extends AppCompatActivity {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
             connection.setDoOutput(true);
-            connection.setConnectTimeout(10000);
-            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
             connection.setRequestMethod("POST");
             ObjectOutputStream outobj = new ObjectOutputStream(connection.getOutputStream());
             outobj.writeObject(user);
@@ -213,10 +215,17 @@ public class RegisterActivity extends AppCompatActivity {
             InputStreamReader inputStreamReader = new InputStreamReader(connection.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String result = bufferedReader.readLine();
-            Log.d(TAG, "register result: "+result);
-
+//            Log.d(TAG, "register result: "+result);
             inputStreamReader.close();
-
+            if(result.equals("Success")){
+                return 1;
+            }
+            else if (result.equals("Exist")){
+                return 2;
+            }
+            else if (result.equals("Error")){
+                return 0;
+            }
 
             connection.disconnect();
         } catch (Exception e) {
@@ -224,7 +233,9 @@ public class RegisterActivity extends AppCompatActivity {
             e.printStackTrace();
             return 0;
         }
-        return 1;
+
+        return 0;
+
     }
 
 
@@ -238,8 +249,8 @@ public class RegisterActivity extends AppCompatActivity {
         try {
             URL url = new URL("http://"+LoginActivity.ip+":8080/XYT_server/UserLogin?userId="+userId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setConnectTimeout(10000);
-            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
 
             connection.connect();
             if(connection.getResponseCode() == HttpURLConnection.HTTP_OK){
