@@ -70,8 +70,8 @@ public class MainActivity extends BaseActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
 
-        home = new HomeFragment();
         fragmentManager = getSupportFragmentManager();
+        home = new HomeFragment();
         transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.content,home);
         transaction.commit();

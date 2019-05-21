@@ -10,8 +10,8 @@ public class Activity_info implements Serializable {
     private String site;
     private int num;
     private int remainingNum;
-    private Date startTime;
-    private Date endTime;
+    private String startTime;
+    private String endTime;
     private String speaker;
     private String university;
     private String college;
@@ -55,16 +55,16 @@ public class Activity_info implements Serializable {
     public void setRemainingNum(int remainingNum) {
         this.remainingNum = remainingNum;
     }
-    public Date getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
     public String getSpeaker() {
