@@ -31,6 +31,8 @@ import java.io.ObjectInputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import utility.LocalCache;
 
@@ -62,7 +64,7 @@ public class HomeFragment extends Fragment {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 activityInfos = (ArrayList<Activity_info>) msg.obj;
-                LocalCache.setDate(getActivity(), activityInfos, "activityInfos", 0);  //数据缓存
+
                 Message msg1 = new Message();
                 if (activityInfos.size() == 0) {
                     //数据库查询不到
@@ -73,6 +75,7 @@ public class HomeFragment extends Fragment {
                     msg1.what = 0;
                 } else {
                     msg1.what = 1;
+                    LocalCache.setDate(getActivity(), activityInfos, "activityInfos", 0);  //数据缓存
                 }
                 handler1.sendMessage(msg1);
             }
@@ -113,16 +116,48 @@ public class HomeFragment extends Fragment {
                 }).start();
             }
         });
-
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new ActivityAdapter(new ArrayList<Activity_info>()));
+
+        home_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<Activity_info> activity_infos = getActivityInfo();
+                        Message msg = new Message();
+                        msg.obj = activity_infos;
+                        mHandler.sendMessage(msg);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                swipeRefresh.setRefreshing(false);
+                            }
+                        });
+                    }
+                }).start();
+            }
+        });
+
 
         //设置加载更多监听
         recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
             @Override
             public void onLoadMore() {
                 adapter.setLoadState(adapter.LOADING);
-                adapter.setLoadState(adapter.LOADING_END);
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.setLoadState(adapter.LOADING_END);
+                            }
+                        });
+                    }
+                }, 1000);
+
+
             }
         });
 
@@ -137,9 +172,12 @@ public class HomeFragment extends Fragment {
                     //网络原因无法访问服务器
 //                    Log.d(TAG, "handleMessage: here to check network error");
                     home_info.setText("无法访问服务器，请检查网络");
+                    Toast.makeText(getContext(),"请检查网络状态",Toast.LENGTH_SHORT).show();
                 } else if (msg.what == 1) {
+//                    Log.d(TAG, "handleMessage: here to check network normal");
                     adapter = new ActivityAdapter(activityInfos);
                     recyclerView.setAdapter(adapter);
+                    home_info.setText("");
                 }
             }
         };
@@ -211,7 +249,7 @@ public class HomeFragment extends Fragment {
                 activityList = (ArrayList) ois.readObject();
                 ois.close();
                 connection.disconnect();
-                Log.d(TAG, "getActivityInfo: here to check what: " + activityList.get(0).getTitle());
+//                Log.d(TAG, "getActivityInfo: here to check what: " + activityList.get(0).getTitle());
                 return activityList;
             }
 

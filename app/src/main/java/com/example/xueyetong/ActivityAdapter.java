@@ -1,6 +1,7 @@
 package com.example.xueyetong;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -82,7 +83,18 @@ public class ActivityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         if (i == TYPE_ITEM) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.activity_item,viewGroup,false);
-            return new RecyclerViewHolder(view);
+            final RecyclerViewHolder holder = new RecyclerViewHolder(view);
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = holder.getAdapterPosition();
+                    Activity_info activityInfo = mActivityList.get(position);
+                    Intent intent = new Intent(mContext, DetailActivity.class);
+                    intent.putExtra(DetailActivity.SELECTED_ACTIVITY, activityInfo);
+                    mContext.startActivity(intent);
+                }
+            });
+            return holder;
         } else if (i == TYPE_FOOTER) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.loading_item,viewGroup,false);
             return new FootViewHolder(view);

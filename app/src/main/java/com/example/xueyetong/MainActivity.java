@@ -76,8 +76,9 @@ public class MainActivity extends BaseActivity
         transaction.add(R.id.content,home);
         transaction.commit();
 
-//        toolbar.setTitle(R.string.toolbar_title);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

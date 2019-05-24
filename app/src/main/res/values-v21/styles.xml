@@ -3,6 +3,10 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="EditTextStyle" parent="Base.Widget.AppCompat.EditText">

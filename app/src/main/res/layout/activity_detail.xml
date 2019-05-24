@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/detail_margin_vertical"
+        android:layout_marginBottom="@dimen/detail_margin_vertical">
+
+        <TextView
+            android:layout_width="@dimen/detail_tv_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"
+            android:text="标题"/>
+
+        <TextView
+            android:id="@+id/detail_tv_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:layout_marginRight="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height"
+        android:layout_marginLeft="@dimen/detail_margin"
+        android:layout_marginRight="@dimen/detail_margin"
+        android:background="@color/grey"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/detail_margin_vertical"
+        android:layout_marginBottom="@dimen/detail_margin_vertical">
+
+        <TextView
+            android:layout_width="@dimen/detail_tv_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"
+            android:text="类型"/>
+
+        <TextView
+            android:id="@+id/detail_tv_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:layout_marginRight="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height"
+        android:layout_marginLeft="@dimen/detail_margin"
+        android:layout_marginRight="@dimen/detail_margin"
+        android:background="@color/grey"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/detail_margin_vertical"
+        android:layout_marginBottom="@dimen/detail_margin_vertical">
+
+        <TextView
+            android:layout_width="@dimen/detail_tv_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"
+            android:text="时间"/>
+
+        <TextView
+            android:id="@+id/detail_tv_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:layout_marginRight="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height"
+        android:layout_marginLeft="@dimen/detail_margin"
+        android:layout_marginRight="@dimen/detail_margin"
+        android:background="@color/grey"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/detail_margin_vertical"
+        android:layout_marginBottom="@dimen/detail_margin_vertical">
+
+        <TextView
+            android:layout_width="@dimen/detail_tv_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"
+            android:text="地点"/>
+
+        <TextView
+            android:id="@+id/detail_tv_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:layout_marginRight="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height"
+        android:layout_marginLeft="@dimen/detail_margin"
+        android:layout_marginRight="@dimen/detail_margin"
+        android:background="@color/grey"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/detail_margin_vertical"
+        android:layout_marginBottom="@dimen/detail_margin_vertical">
+
+        <TextView
+            android:layout_width="@dimen/detail_tv_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"
+            android:text="主讲人"/>
+
+        <TextView
+            android:id="@+id/detail_tv_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:layout_marginRight="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height"
+        android:layout_marginLeft="@dimen/detail_margin"
+        android:layout_marginRight="@dimen/detail_margin"
+        android:background="@color/grey"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/detail_margin_vertical"
+        android:layout_marginBottom="@dimen/detail_margin_vertical">
+
+        <TextView
+            android:layout_width="@dimen/detail_tv_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"
+            android:text="所属学院"/>
+
+        <TextView
+            android:id="@+id/detail_tv_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:layout_marginRight="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height"
+        android:layout_marginLeft="@dimen/detail_margin"
+        android:layout_marginRight="@dimen/detail_margin"
+        android:background="@color/grey"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/detail_margin_vertical"
+        android:layout_marginBottom="@dimen/detail_margin_vertical">
+
+        <TextView
+            android:layout_width="@dimen/detail_tv_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"
+            android:text="活动简介"/>
+
+        <TextView
+            android:id="@+id/detail_tv_7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:layout_marginRight="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height"
+        android:layout_marginLeft="@dimen/detail_margin"
+        android:layout_marginRight="@dimen/detail_margin"
+        android:background="@color/grey"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/detail_margin_vertical"
+        android:layout_marginBottom="@dimen/detail_margin_vertical">
+
+        <TextView
+            android:layout_width="@dimen/detail_tv_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"
+            android:text="编号"/>
+
+        <TextView
+            android:id="@+id/detail_tv_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:layout_marginRight="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height"
+        android:layout_marginLeft="@dimen/detail_margin"
+        android:layout_marginRight="@dimen/detail_margin"
+        android:background="@color/grey"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/detail_margin_vertical"
+        android:layout_marginBottom="@dimen/detail_margin_vertical">
+
+        <TextView
+            android:layout_width="@dimen/detail_tv_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"
+            android:text=""/>
+
+        <TextView
+            android:id="@+id/detail_tv_9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_margin"
+            android:layout_marginRight="@dimen/detail_margin"
+            android:textSize="@dimen/detail_textSize"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height"
+        android:layout_marginLeft="@dimen/detail_margin"
+        android:layout_marginRight="@dimen/detail_margin"
+        android:background="@color/grey"/>
+
+    <Button
+        android:id="@+id/sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp" />
+
+</LinearLayout>
