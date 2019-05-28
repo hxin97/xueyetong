@@ -82,11 +82,11 @@ public class LoginActivity extends BaseActivity {
                     editor = pref.edit();
                     if(rememberPass.isChecked()){
                         editor.putBoolean("remember_password",true);
-                        editor.putString("account",user.getUId());
                         editor.putString("password",user.getUPassword());
                     }else {
                         editor.clear();
                     }
+                    editor.putString("account",user.getUId());
                     editor.putString("userName",user.getUName());
                     editor.putInt("state",1);  //登录状态为已登录
                     editor.apply();
